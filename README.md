@@ -1,134 +1,130 @@
-O Projeto
+O Plugin
 ----------------------------------
 
-Este aplicativo tem o objetivo de descriptografar as senhas de uma colunas presente em uma tabela de uma banco de dados MySql.
+Este plugin foi criado com o objetivo de transformar os *select fields* em componentes de interface (*User Interface*) mais atraentes.
 
-O aplicativo faz uso da tecnologia *Java* responsável por criptografar e descriptografar as senhas usando o algoritmo **PBEWithMd5AndDes**.
+Quase sempre que precisavamos customizar a aparência de uma campo *select* criavamos regras CSS para esconder o campo *select* e apresentar uma imagem no local, quando o usuário clicasse na imagem (através de javascript), as opções do *select* eram exibidas.
 
-A outra camada foi desenvolvida em *PHP* e utiliza o framework *Symfony 2*. Este por sua vez, realiza a busca em uma tabela no banco de dados nomeada **CENTRAL_LOGIN** e percorre as seguintes colunas **ID**, **SEQDIGITAL** e **LOGIN**, sendo que, para cada linha de um registro, o PHP chama o pacote *com.cekurte.PBEWithMd5AndDes()* da camada Java para quebrar a senha. Após, quebrar todas as senhas o resultado é exibido em uma aplicação Web que inclui paginação de resultados. O visual do sistema web é baseado no Twitter Bootstrap.
+Esse foi o motivo que nos inspirou a desenvolver este plugin.
 
-### Notas:
+Se você não quer escrever uma linha sequer de *CSS* para utilizar este *plugin*, basta utilizar o **Twitter Bootstrap** em conjunto com este script.
 
-A classe *com.cekurte.PBEWithMd5AndDes()* está presente dentro do pacote *CekurteCipher.jar*.
+Dependências
+========================
 
-O sistema web escrito em *PHP* se comunica com a tecnologia *Java* através de um projeto nomeado *JavaBridge*.
-
-Requisitos de Instalação
-----------------------------------
-
-Requisitos da instalação:
-
-- Apache 2.2.x
-- PHP 5.3.5+
-- Mysql 5.5.x
-- Java JRE 1.7.x
-
-Gerenciando as dependências do Projeto
-----------------------------------
-
-Assumimos que você já possua o composer.
-
-### Instalando/Atualizando (*vendors* ou *bibliotecas de terceiros*)
-
-Entre no diretório raiz do projeto e execute:
-
-    php composer.phar install
-
-### Verificando as configurações do sistema (*app/check.php*)
-
-Antes de iniciar a codificação, verifique se a sua configuração de ambiente atende aos requisitos do Symfony 2 executando o seguinte comando no diretório root do projeto:
-
-    php app/check.php
+Este plugin depende da biblioteca *jQuery*. Afim de compatibilizar este plugin com o maior números de navegadores possível, ele foi desenvolvido utilizando a versão *1.9* do *jQuery*.
 
 Instalação
 ========================
 
-## Virtual Host do Apache ##
+## Incluindo o Script ##
 
-	<VirtualHost *:80>
-	    DocumentRoot /Library/WebServer/Documents/pbewithmd5anddes/web
-	    ServerName cekurte.pwd.local
-	
-	    <Directory /Library/WebServer/Documents/pbewithmd5anddes/web>
-	        Options All
-	        Order allow,deny
-	        AllowOverride None
-	        Allow from all
-	        RewriteEngine On
-	        RewriteCond %{REQUEST_FILENAME} !-f
-	        RewriteRule ^(.*)$ app_dev.php [QSA,L]
-	    </Directory>
-	</VirtualHost>
+Na seção *head* do seu documento adicione a linha abaixo:
+
+	<script type="text/javascript" src="../jquery.cekurteSelect.js"></script>
+
 
 ### Notas:
 
-As variáveis *DocumentRoot* e *Directory* deverão apontar para o diretório web do Symfony em sua máquina. Por exemplo, no xampp (em ambientes windows) o path poderia ser:
+O atributo *src* (apresentado no código *html* acima), deverá apontar para a localização onde se encontra o script **jquery.cekurteSelect.js**.
 
-*C:\xampp\htdocs\softgestao\web*
+## Criando um select ##
 
-### Observações:
+Considerando que você já tenha adicionado um campo *select* no documento *html*, semelhante com este:
 
-Também é necessário adicionar uma entrada no arquivo hosts, no Windows esse arquivo fica localizado em: 
+	<select id="select1" name="select1">
+        <option value="1">Option 1</option>
+        <option value="2">Option 2</option>
+        <option value="3">Option 3</option>
+        <option value="4">Option 4</option>
+        <option value="5">Option 5</option>
+    </select>
 
-*C:\Windows\System32\drivers\etc*
+Crie um arquivo Javascript e adicione o código abaixo, pois é desta forma que você irá inicializar o plugin:
 
-Enquanto que, no Mac OSX e distribuições Linux o arquivo fica localizado em: 
+	$('#select1').cekurteSelect();
 
-*/etc/hosts*
+## Parâmetros de Inicialização ##
 
-Adicione a seguinte linha no final deste arquivo:
+Você poderá adicionar os seguintes parâmetros durante a inicialização do plugin, os valores apresentados abaixo são os valores *default*:
 
-	127.0.0.1 cekurte.pwd.local
+	$('#select1').cekurteSelect({
+		'debug'					: false,
+		'twitterBootstrap'      : true,
+		'ckSelectClass'         : 'ckSelectCustom',
+	    'ckSelectorClass'       : 'ckSelectorCustom',
+	    'ckToogleClass'         : 'ckToogleCustom',
+	    'ckContainerClass'      : 'ckContainerCustom'
+	});
 
-## PHP.ini ##
+### debug
 
-Você deve editar uma diretiva do arquivo de configuração do interpretador PHP, no arquivo **php.ini**. Habilite a seguinte diretiva:
+Recebe um valor booleano, se **true** irá mostrar algumas informações referente a eventos do *plugin*. O valor *default* é **false**.
 
-	allow_url_include = On
+### twitterBootstrap
 
-## Variáveis de Ambiente PATH ##
+Recebe um valor booleano, se **true** irá adicionar aos elementos as classes do Twitter Bootstrap. O valor *default* é **true**.
 
-Adicione ao *PATH* do sistema operacional o diretório do **PHP**, o gerenciador de dependências **Composer** e o **Java**.
+### ckSelectClass
 
-## JavaBridge ##
+Modifica o nome da classe que envolve os elementos html. O valor *default* é *ckSelectCustom*.
 
-Copie os arquivos **JavaBridge.jar** e **CekurteCipher.jar** para o diretório **bin** presente na raiz do projeto, executando os comandos abaixo:
+### ckSelectorClass
 
-	cp ./docs/JavaBridge.jar ./bin/
-	cp ./docs/CekurteCipher.jar ./bin/
+Modifica o nome da classe que envolve a opção escolhida pelo usuário. O valor *default* é *ckSelectorCustom*.
 
-## Instalando o banco de dados ##
+### ckToogleClass
 
-Execute os comandos abaixo na raiz do projeto.
+Modifica o nome da classe responsável por exibir um botão indicando um menu de *dropdown*. O valor *default* é *ckToogleCustom*.
 
-	php app/console doctrine:database:create
-	php app/console doctrine:schema:create
+### ckContainerClass
 
-## Paginação ##
+Modifica o nome da classe do elemento **ul**. O valor *default* é *ckContainerCustom*.
 
-Se você quiser modificar número de registros exibidos por página no aplicativo web, poderá simplesmente editar o arquivo *app/config/config.yml*. O valor *default* é dez.
-	
-	paginator_results_per_page: 10
+## Eventos ##
 
-Executando o Projeto
-----------------------------------
+Através os eventos você poderá capturar o valor do *select* por exemplo, **antes** (*before*) ou **depois** (*after*) de um usuário selecionar um novo valor para o campo *select*.
 
-Entre no diretório raiz do projeto e execute o pacote java com o seguinte comando:
+Os seguintes eventos estão disponíveis:
 
-	java -jar bin/JavaBridge.jar
+### beforeInit
 
-Um *launcher* será exibido apenas clique no botão OK. Isto irá criar um recurso no servidor web no *localhost* na porta **8080**.
+Disparado **antes** do carregamento das opções (elementos *option*) do *select*.
 
-Após realizar os ajustes acima, você poderá acessar o projeto através do seu navegador, digitando a seguinte URL:
+### afterInit
 
-	http://cekurte.pwd.local
+Disparado **depois** do carregamento das opções (elementos *option*) do *select*.
 
-A aplicação será exibida apresentando as seguintes colunas.
+### beforeOpenSelect
 
-- ID
-- Usuário
-- Senha criptografada em (*PBEWithMd5AndDes*)
-- Senha descriptografada (*PBEWithMd5AndDes*)
+Disparado **antes** do usuário abrir as opções do *select*.
+
+### afterOpenSelect
+
+Disparado **depois** do usuário abrir as opções do *select*.
+
+
+
+
+### beforeChangeSelect
+
+Disparado **antes** do usuário selecionar uma nova opção para o *select*.
+
+### afterChangeSelect
+
+Disparado **depois** do usuário selecionar uma nova opção para o *select*.
+
+### beforeCloseSelect
+
+Disparado **antes** do usuário fechar as opções do *select*.
+
+### afterCloseSelect
+
+Disparado **depois** do usuário fechar as opções do *select*.
+
+Exemplos
+========================
+Você poderá encontrar exemplos dentro da pasta **demo** presente neste repositório.
 
 ----------------------------------
 Aproveite e faça bom uso deste projeto!

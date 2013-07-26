@@ -45,20 +45,23 @@ $.fn.cekurteSelect = function(userOptions) {
     var twitterBootstrap;
 
     $(function() {
+        
+        if (userOptions !== undefined) {
+         
+            // ---------------------------------------------------------------------
+            // Configura a varíavel debug e twitterBootstrap
 
-        // ---------------------------------------------------------------------
-        // Configura a varíavel debug e twitterBootstrap
+            debug = userOptions.debug;
+            twitterBootstrap = userOptions.twitterBootstrap;
 
-        debug = userOptions.debug;
-        twitterBootstrap = userOptions.twitterBootstrap;
+            // ---------------------------------------------------------------------
+            // Mescla as classes customizadas de acordo com os parametros do usuário
 
-        // ---------------------------------------------------------------------
-        // Mescla as classes customizadas de acordo com os parametros do usuário
+            delete userOptions.debug;
+            delete userOptions.twitterBootstrap;
 
-        delete userOptions.debug;
-        delete userOptions.twitterBootstrap;
-
-        $.extend(customElementCssClass, userOptions);
+            $.extend(customElementCssClass, userOptions);
+        }
 
         // ---------------------------------------------------------------------
         // Esconde o Select original
@@ -89,7 +92,7 @@ $.fn.cekurteSelect = function(userOptions) {
     };
     
     var isTwitterBootstrap = function() {
-        return twitterBootstrap === true;
+        return (twitterBootstrap === false) ? false : true;
     };
     
     var getSelectElement = function() {

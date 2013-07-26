@@ -12,47 +12,40 @@
 
 jQuery(document).ready(function($){
     
-    $('#select1').cekurteSelect({
-        'twitterBootstrap'      : true
-    });
+    $('#select1').cekurteSelect();
     
     $('#select2').cekurteSelect({
-        'twitterBootstrap'      : true,
         'ckSelectorClass'       : 'btn btn-primary',
         'ckToogleClass'         : 'btn btn-primary dropdown-toggle'
     });
     
     $('#select3').cekurteSelect({
-        'twitterBootstrap'      : true,
         'ckSelectorClass'       : 'btn btn-info',
         'ckToogleClass'         : 'btn btn-info dropdown-toggle'
     });
     
     $('#select4').cekurteSelect({
-        'twitterBootstrap'      : true,
         'ckSelectorClass'       : 'btn btn-success',
         'ckToogleClass'         : 'btn btn-success dropdown-toggle'
     });
     
     $('#select5').cekurteSelect({
-        'twitterBootstrap'      : true,
         'ckSelectorClass'       : 'btn btn-warning',
         'ckToogleClass'         : 'btn btn-warning dropdown-toggle'
     });
     
     $('#select6').cekurteSelect({
-        'twitterBootstrap'      : true,
         'ckSelectorClass'       : 'btn btn-danger',
         'ckToogleClass'         : 'btn btn-danger dropdown-toggle'
     });
     
     $('#select7').cekurteSelect({
-        'twitterBootstrap'      : true,
         'ckSelectorClass'       : 'btn btn-inverse',
         'ckToogleClass'         : 'btn btn-inverse dropdown-toggle'
     });
     
     $('#select-custom').cekurteSelect({
+        'twitterBootstrap'      : false,
         'ckSelectClass'         : 'selectCustom1'
     });
     
