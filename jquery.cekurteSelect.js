@@ -7,7 +7,7 @@
  * mais atraente.
  * 
  * @author: João Paulo Cercal <sistemas@cekurte.com>
- * @version: 1.0
+ * @version: 1.1
  */
 
 $.fn.cekurteSelect = function(userOptions) {
@@ -48,14 +48,15 @@ $.fn.cekurteSelect = function(userOptions) {
         
         if (userOptions !== undefined) {
          
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Configura a varíavel debug e twitterBootstrap
 
             debug = userOptions.debug;
             twitterBootstrap = userOptions.twitterBootstrap;
 
-            // ---------------------------------------------------------------------
-            // Mescla as classes customizadas de acordo com os parametros do usuário
+            // -----------------------------------------------------------------
+            // Mescla as classes customizadas de acordo com os parametros do 
+            // usuário
 
             delete userOptions.debug;
             delete userOptions.twitterBootstrap;
@@ -123,7 +124,7 @@ $.fn.cekurteSelect = function(userOptions) {
         }
         
         var ckSelector = $(this).find(getElementCssClass('ckSelectorClass', true));
-
+        
         var value = $(ckSelector).attr('data-value');
 
         $(getSelectElement()).val(value);
@@ -162,8 +163,14 @@ $.fn.cekurteSelect = function(userOptions) {
         
         if (linkOption !== undefined) {
             
+            var nodeName = $(linkOption).get(0).nodeName.toLowerCase();
+            
+            if (nodeName === 'li') {
+                linkOption = $(linkOption).find('a');
+            }
+            
             $(ckSelector)
-                .html($(linkOption).html())
+                .html($(linkOption).text())
                 .attr('data-value', $(linkOption).data('value'))
             ;
 
@@ -226,11 +233,14 @@ $.fn.cekurteSelect = function(userOptions) {
         $(getSelectElement()).find('option').each(function(index, element){
             options.push({
                 'value'     : $(element).val(),
-                'display'   : $(element).html()
+                'display'   : $(element).text()
             });
         });
 
         if (options.length !== 0) {
+            
+            // -----------------------------------------------------------------
+            // Cria os elementos que serão inseridos no DOM
             
             var containerDiv = $('<div>')
                 .attr('id', $(getSelectElement()).attr('id') + '-select')
@@ -261,6 +271,9 @@ $.fn.cekurteSelect = function(userOptions) {
                 console.info('Copiando os elementos "option" do select "#' + $(getSelectElement()).attr('id') + '".');
             }
             
+            // -----------------------------------------------------------------
+            // Adiciona as classes para utilizar o Twitter Bootstrap
+            
             if (isTwitterBootstrap()) {
                 
                 if (isDebug()) {
@@ -277,10 +290,6 @@ $.fn.cekurteSelect = function(userOptions) {
             
             options.forEach(function(option, index){
 
-                if (index === 0) {
-                    $(ckSelector).html(option.display);
-                }
-
                 var link = $('<a>').attr('href', '#').attr('data-value', option.value).html(option.display);
 
                 var li = $('<li>').append(link);
@@ -288,12 +297,19 @@ $.fn.cekurteSelect = function(userOptions) {
                 $(containerUl).append(li);
             });
             
+            // -----------------------------------------------------------------
+            // Adiciona os elementos no DOM
+            
+            var selectedElement = $(getSelectElement()).find(':selected');
+            
+            $(ckSelector).html($(selectedElement).text());
+            
+            // -----------------------------------------------------------------
+            // Adiciona os elementos no DOM
+            
             if (isDebug()) {
                 console.info('Adicionando os elementos no DOM.');
             }
-            
-            // ---------------------------------------------------------------------
-            // Adiciona os elementos no DOM
             
             var ckSelectContainer = $('<div>').addClass(getElementCssClass('ckSelectContainerClass'));
             
@@ -305,16 +321,16 @@ $.fn.cekurteSelect = function(userOptions) {
             
             $(ckSelectContainer).append(containerDiv);
             
-            $($(getSelectElement()).parent()).prepend(ckSelectContainer);
+            $($(getSelectElement()).parent()).append(ckSelectContainer);
             
             $(ckSelectContainer).append($(getSelectElement()));
             
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Recupera o ckSelect
             
             var ckSelect = getCekurteSelectElement();
             
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Register Event: openSelect
 
             var selectorOpen = 
@@ -339,7 +355,7 @@ $.fn.cekurteSelect = function(userOptions) {
 
             $(ckSelect).on('openSelect', openSelect);
 
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Register Event: closeSelect
 
             var selectorClose = 
@@ -357,7 +373,7 @@ $.fn.cekurteSelect = function(userOptions) {
                 return false;
             });
 
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Register Event: changeSelect
 
             $(ckSelect).on('changeSelect', changeSelect);
