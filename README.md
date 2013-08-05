@@ -126,6 +126,10 @@ Exemplos
 ========================
 Você poderá encontrar exemplos dentro da pasta **demo** presente neste repositório.
 
+Demostração
+========================
+Se você deseja ver este *plugin* em ação, então, acesse: [http://cekurtesistemas.github.io/JQueryCekurteSelect/](http://cekurtesistemas.github.io/JQueryCekurteSelect/ "Ver Demonstração").
+
 ----------------------------------
 Aproveite e faça bom uso deste projeto!
 
